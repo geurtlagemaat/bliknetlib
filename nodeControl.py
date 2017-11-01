@@ -26,13 +26,13 @@ class nodeControl(object):
 
         if self.nodeProps.has_option('log', 'logLevel'):
             logMode = self.nodeProps.get('log', 'logLevel')
-            if logMode == 'DEBUG':
+            if logMode.upper() == 'DEBUG':
                 logLevel = logging.DEBUG
-            elif logMode == 'INFO':
+            elif logMode.upper() == 'INFO':
                 logLevel = logging.INFO
-            elif logMode == 'WARNING':
+            elif logMode.upper() == 'WARNING':
                 logLevel = logging.WARNING
-            elif logMode == 'ERROR':
+            elif logMode.upper() == 'ERROR':
                 logLevel = logging.ERROR
             else:
                 logLevel = logging.INFO
@@ -57,8 +57,6 @@ class nodeControl(object):
         self.log = logging.getLogger('')
         self.log.setLevel(logLevel)
         handler = RFHandler(logFile, maxBytes=maxLogfileSize, backupCount=maxLogFiles)
-        # print "maxBytes set to: %s" % str(maxLogfileSize)
-        # handler.setLevel(logLevel)
         formatter = logging.Formatter(
             "%(asctime)s %(levelname)-8s %(process)-5d [%(module)s.%(funcName)s:%(lineno)d] %(message)s")
         handler.setFormatter(formatter)
@@ -168,6 +166,7 @@ class nodeControl(object):
             except Exception, exp:
                 self.log.warning("can not publish to MQTT Broker: %s" % traceback.format_exc())
 
+    # generic store
     def setProperty(self, propertyName, propertyValue):
         self.propertyStore[propertyName] = propertyValue
 
