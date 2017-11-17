@@ -31,7 +31,7 @@ class serialMsg(object):
         self._Trys = 0
 
     def serialMsgFromString(self, sString):
-        if len(sString) > 19:
+        if len(sString) >= 19:
             sReadChecksum = sString[16:19]
             iReadChecksum = int(sReadChecksum)
             # calculate iChecksum
@@ -103,7 +103,8 @@ class serialMsg(object):
         for cChar in sTmp:
             iChecksum += ord(cChar)
         sTmp += str(iChecksum)
-        return sTmp
+        sTmp += chr(0x04)  # EOT
+        return sTmp #TODO, check geen laatste EOT?
 
     # FromAdress
     @property
@@ -166,7 +167,10 @@ class serialMsg(object):
 
     @MsgValue.setter
     def MsgValue(self, value):
-        self._MsgValue = "%03d" % (value,)
+        if isinstance( value, ( int, long ) ):
+            self._MsgValue = "%03d" % (value,)
+        else:
+            self._MsgValue = value
 
     # IsValid
     @property

@@ -64,11 +64,11 @@ class nodeControl(object):
         self.log.info("BliknetNode config, nodeID: %s" % (self.nodeID))
 
         # serial stuff
-        if self.nodeProps.has_option('serial', 'port'):
+        """if self.nodeProps.has_option('serial', 'port'):
             self.serial = self.nodeProps.get('serial', 'port')
             self.log.info("Found serial port: %s" % self.serial)
         else:
-            self.log.info("Did not found a serial port")
+            self.log.info("Did not found a serial port") """
 
         # data dir
         if self.nodeProps.has_option('paths', 'data'):

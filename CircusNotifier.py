@@ -1,5 +1,5 @@
 __author__ = 'lagemaag'
-import time
+import time, os
 import traceback
 from socket import *
 
