@@ -9,10 +9,10 @@ install_requires = [
 ]
 
 setup(name='bliknetlib',
-      version='1.0.3',
+      version='1.0.4',
       description='Python IoT integration utilities',
       long_description='Python IoT integration utilities',
       author='Geurt Lagemaat',
       author_email='geurtlagemaat@gmail.com',
-      py_modules=['nodeControl', 'CircusNotifier', 'serialMsg', 'serialMsgQueues', 'astro_functions'],
+      py_modules=['nodeControl', 'CircusNotifier', 'serialMsg', 'serialMsgQueues', 'serialNodesProtocol', 'astro_functions'],
       )
