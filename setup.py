@@ -1,5 +1,6 @@
 from distutils.core import setup
 
+
 install_requires = [
     'twisted==16.4.1',
     'circus==0.14.0'
@@ -14,5 +15,6 @@ setup(name='bliknetlib',
       long_description='Python IoT integration utilities',
       author='Geurt Lagemaat',
       author_email='geurtlagemaat@gmail.com',
-      py_modules=['nodeControl', 'CircusNotifier', 'serialMsg', 'serialMsgQueues', 'serialNodesProtocol', 'astro_functions'],
+	  py_modules=['nodeControl', 'CircusNotifier', 'serialMsg', 'serialMsgQueues', 'serialNodesProtocol', 'astro_functions'],
+	  package_dir={'':'bliknetlib'}
       )
