@@ -18,7 +18,7 @@ except ImportError:
 class nodeControl(object):
     def __init__(self, propertiesfile):
         self.propertyStore = {}
-		self.propertiesFile = propertiesfile
+        self.propertiesFile = propertiesfile
         self.nodeProps = None
         self.nodeProps = ConfigParser.ConfigParser()
         self.nodeProps.read(propertiesfile)
