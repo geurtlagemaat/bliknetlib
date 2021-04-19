@@ -92,7 +92,7 @@ class nodeControl(object):
                     import sqlite3
                     self.DBConn = sqlite3.connect(self.nodeProps.get('database', 'datafile'))
                     self.DBCursor = self.DBConn.cursor()
-                except Exception, exp:
+                except Exception as exp:
                     self.log.error(
                         "SQLLite init error. Location %s, error %s." % (self.nodeProps.get('database', 'datafile'), \
                                                                         traceback.format_exc()))
@@ -113,7 +113,7 @@ class nodeControl(object):
                                                           user=self.nodeProps.get('database', 'user'),
                                                           passwd=self.nodeProps.get('database', 'pw'))
                     self.DBCursor = self.DBConn.cursor()
-                except Exception, exp:
+                except Exception as exp:
                     self.log.error("mysql init error. Location %s, error %s." % (traceback.format_exc()))
         # init MQTT
         self.client = None
@@ -125,7 +125,16 @@ class nodeControl(object):
             self.mqttClientID = self.nodeProps.get('MQTT', 'clientID')
             self.log.info("MQTT broker set to URL:%s, port: %s and ClientID: %s" % (
                 self.mqttURL, self.mqttPort, self.mqttClientID))
-            try:
+            iTry = 1
+            while not self.doMQTTConnect(iTry):
+                if iTry == 5:
+                    break
+                time.sleep(20)
+                iTry += 1
+            if self.mqttClient is None:
+                self.log.error("can not connect to MQTT Broker: %s. URL: %s, port: %s. Max trys reached, giving up." % (
+                    traceback.format_exc(), self.mqttURL, self.mqttPort))
+            """try:
                 import paho.mqtt.client as paho
                 self.mqttClient = paho.Client(client_id=self.mqttClientID)
                 self.mqttClient.on_connect = self.on_MQTTConnect
@@ -134,7 +143,7 @@ class nodeControl(object):
                 # self.mqttClient.loop_start()
             except Exception, exp:
                 self.log.error("can not connect to MQTT Broker: %s. URL: %s, port: %s." % (
-                    traceback.format_exc(), self.mqttURL, self.mqttPort ))
+                    traceback.format_exc(), self.mqttURL, self.mqttPort ))  """
         else:
             self.log.info("MQTT broker not activated")
 
@@ -154,6 +163,19 @@ class nodeControl(object):
         print("in __exit__, excpetion: %s." % exception_value)
 
     # MQTT Functions
+    def doMQTTConnect(self, iTry=1):
+        try:
+            import paho.mqtt.client as paho
+            self.mqttClient = paho.Client(client_id=self.mqttClientID)
+            self.mqttClient.on_connect = self.on_MQTTConnect
+            self.mqttClient.username_pw_set(self.nodeProps.get('MQTT', 'user'), self.nodeProps.get('MQTT', 'pw'))
+            self.mqttClient.connect(self.mqttURL, self.mqttPort)
+            return True
+        except Exception as exp:
+            self.log.error("can not connect to MQTT Broker: %s. URL: %s, port: %s. Try: %s." % (
+                traceback.format_exc(), self.mqttURL, self.mqttPort, iTry))
+            return False
+
     def on_MQTTConnect(self, client, userdata, flags, rc):
         self.log.info("MQTTConnected, client: %s, userdata: %s, flags:% s and rc: %s" % (client, userdata, flags, rc))
         pass
@@ -164,7 +186,7 @@ class nodeControl(object):
             try:
                 self.mqttClient.publish(sTopic, sValue, qos=iQOS, retain=bRetain)
                 self.log.debug("MQTTPublish of topic %s done" % sTopic)
-            except Exception, exp:
+            except Exception as exp:
                 self.log.warning("can not publish to MQTT Broker: %s" % traceback.format_exc())
 
     # generic store
