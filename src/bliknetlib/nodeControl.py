@@ -1,7 +1,8 @@
 __author__ = 'geurt'
-import ConfigParser
+import configparser
 import logging
 import os
+import time
 import traceback
 
 from CircusNotifier import circusNotifier
@@ -20,7 +21,7 @@ class nodeControl(object):
         self.propertyStore = {}
         self.propertiesFile = propertiesfile
         self.nodeProps = None
-        self.nodeProps = ConfigParser.ConfigParser()
+        self.nodeProps = configparser.ConfigParser()
         self.nodeProps.read(propertiesfile)
 
         self.nodeID = self.nodeProps.get('system', 'nodeId')
