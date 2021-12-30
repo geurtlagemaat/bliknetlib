@@ -47,5 +47,5 @@ def isDusk(oNodeControl):
         else:
             return False
 
-    except Exception, exp:
+    except Exception as exp:
         oNodeControl.log.error("isDusk init error. Error %s." % (traceback.format_exc()))

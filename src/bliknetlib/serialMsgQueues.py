@@ -76,8 +76,8 @@ class SerialMsgQueues(object):
                 self._NodeControl.log.warning(
                     "Timeout of: %s, removed from Enq. queue. Current Message Trys is: %s." % (
                         MsgKey, str(oSerialMsg.Trys)))
-                print "Timeout of key: %s, removed from Enq. queue. Current Message Trys is: %s." % (
-                    MsgKey, str(oSerialMsg.Trys))
+                print("Timeout of key: %s, removed from Enq. queue. Current Message Trys is: %s." % (
+                    MsgKey, str(oSerialMsg.Trys)))
                 del self._SendEnq[MsgKey]
                 if oSerialMsg.Trys < self._iRetrys:
                     if self._GetKeyStr(oSerialMsg) not in self._Retrys:
@@ -87,7 +87,7 @@ class SerialMsgQueues(object):
                     else:
                         self._NodeControl.log.warning("Msg found on retry queue, not added: %s." % (MsgKey))
                 else:
-                    print "retries exhausted for: %s, retrys is set to: %s." % (MsgKey, str(self._iRetrys))
+                    print("retries exhausted for: %s, retrys is set to: %s." % (MsgKey, str(self._iRetrys)))
                     self._NodeControl.log.warning(
                         "retries exhausted for: %s, max retrys is set to: %s." % (MsgKey, str(self._iRetrys)))
                     if self._GetKeyStr(oSerialMsg) in self._Retrys:
